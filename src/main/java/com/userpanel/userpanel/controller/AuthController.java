@@ -19,12 +19,12 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping("sign-in")
+    @PostMapping("/sign-in")
     public JwtDTO singIn(@Valid @RequestBody LoginRequest loginRequest) {
         return authService.signIn(loginRequest);
     }
 
-    @PostMapping("sign-up")
+    @PostMapping("/sign-up")
     public void signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         authService.signUp(signUpRequest);
     }
