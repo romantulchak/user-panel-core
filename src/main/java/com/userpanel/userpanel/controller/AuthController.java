@@ -6,18 +6,15 @@ import com.userpanel.userpanel.request.SignUpRequest;
 import com.userpanel.userpanel.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/api/v1/auth")
+@CrossOrigin(value = "*", maxAge = 3600L)
 @AllArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
 
     @PostMapping("/sign-in")
     public JwtDTO singIn(@Valid @RequestBody LoginRequest loginRequest) {
