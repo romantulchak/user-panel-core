@@ -9,7 +9,6 @@ public class LoginRequest {
     @Email
     @NotNull
     String email;
-    @Email
     @NotNull
     String password;
 }
