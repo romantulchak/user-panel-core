@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void signUp(SignUpRequest signUpRequest) {
+    public JwtDTO signUp(SignUpRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new UserAlreadyExistsException(signUpRequest.getEmail());
         }
@@ -45,5 +45,7 @@ public class AuthServiceImpl implements AuthService {
                 .setName(signUpRequest.getFullName())
                 .setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userRepository.save(user);
+        LoginRequest loginRequest = new LoginRequest(user.getEmail(), signUpRequest.getPassword());
+        return signIn(loginRequest);
     }
 }

@@ -8,5 +8,5 @@ public interface AuthService {
 
     JwtDTO signIn(LoginRequest loginRequest);
 
-    void signUp(SignUpRequest signUpRequest);
+    JwtDTO signUp(SignUpRequest signUpRequest);
 }

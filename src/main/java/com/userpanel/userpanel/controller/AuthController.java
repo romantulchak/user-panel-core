@@ -22,8 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        authService.signUp(signUpRequest);
+    public JwtDTO signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        return authService.signUp(signUpRequest);
     }
 
 }
