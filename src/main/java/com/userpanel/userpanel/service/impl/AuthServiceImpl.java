@@ -7,7 +7,9 @@ import com.userpanel.userpanel.repository.UserRepository;
 import com.userpanel.userpanel.request.LoginRequest;
 import com.userpanel.userpanel.request.SignUpRequest;
 import com.userpanel.userpanel.security.jwt.JwtUtils;
+import com.userpanel.userpanel.service.AccountService;
 import com.userpanel.userpanel.service.AuthService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final AccountService accountService;
 
     @Override
     public JwtDTO signIn(LoginRequest loginRequest) {
@@ -36,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public JwtDTO signUp(SignUpRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new UserAlreadyExistsException(signUpRequest.getEmail());
@@ -44,7 +48,8 @@ public class AuthServiceImpl implements AuthService {
                 .setEmail(signUpRequest.getEmail())
                 .setName(signUpRequest.getFullName())
                 .setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        userRepository.save(user);
+        User userAfterSave = userRepository.save(user);
+        accountService.create(userAfterSave);
         LoginRequest loginRequest = new LoginRequest(user.getEmail(), signUpRequest.getPassword());
         return signIn(loginRequest);
     }

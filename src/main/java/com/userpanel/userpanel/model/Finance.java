@@ -1,16 +1,20 @@
 package com.userpanel.userpanel.model;
 
+import com.userpanel.userpanel.model.type.FinanceType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@Builder(setterPrefix = "with")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Finance {
 
     @Id
@@ -18,12 +22,16 @@ public class Finance {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @OneToMany(mappedBy = "finance")
-    private List<Income> incomes;
+    @NotNull
+    private double value;
 
-    @OneToMany(mappedBy = "finance")
-    private List<Expense> expenses;
+    @NotNull
+    private LocalDateTime date;
 
-    @OneToOne
-    private User user;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private FinanceType type;
+
+    @ManyToOne
+    private Account account;
 }
