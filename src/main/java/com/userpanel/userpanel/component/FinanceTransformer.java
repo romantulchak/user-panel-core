@@ -11,10 +11,12 @@ import java.util.List;
 public class FinanceTransformer {
 
 
-    public FinanceDTO convert(double income, double expense, List<Finance> finances) {
+    public FinanceDTO convert(double totalIncome, double totalExpense, List<Finance> finances) {
         List<IncomeExpenseDTO> incomeExpense = finances.stream()
                 .map(finance -> new IncomeExpenseDTO(finance.getValue(), finance.getDate(), finance.getType()))
                 .toList();
-        return new FinanceDTO(income, expense, incomeExpense);
+        double cash = totalIncome - totalExpense;
+        double cashOnHand = cash < 0 ? 0 : cash;
+        return new FinanceDTO(totalIncome, totalExpense, cashOnHand, incomeExpense);
     }
 }

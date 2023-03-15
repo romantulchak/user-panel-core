@@ -8,5 +8,6 @@ import java.util.List;
 public class FinanceDTO {
     double income;
     double expense;
+    double cashOnHand;
     List<IncomeExpenseDTO> incomeExpenses;
 }

@@ -40,7 +40,7 @@ public class FinanceServiceImpl implements FinanceService {
     public FinanceDTO getFinanceInfo(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         UUID id = userDetails.getId();
-        List<Finance> finances = financeRepository.getAllByAccount_User_Id(id);
+        List<Finance> finances = financeRepository.getAllByAccountUserId(id);
         double income = finances.stream()
                 .filter(finance -> finance.getType() == INCOME)
                 .mapToDouble(Finance::getValue)

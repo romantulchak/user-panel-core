@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface FinanceRepository extends JpaRepository<Finance, UUID> {
 
-    List<Finance> getAllByAccount_User_Id(UUID userId);
+    List<Finance> getAllByAccountUserId(UUID userId);
 }
