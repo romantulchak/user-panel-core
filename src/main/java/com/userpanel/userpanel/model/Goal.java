@@ -1,37 +1,38 @@
 package com.userpanel.userpanel.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class Account {
+public class Goal {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @OneToMany(mappedBy = "account")
-    private List<Finance> finances;
+    @NotNull
+    private String name;
 
-    @OneToMany(mappedBy = "account")
-    private List<Goal> goals;
+    private double price;
 
+    private boolean isActive;
+
+    @NotNull
+    private String iconPath;
+
+    @NotNull
     @OneToOne
-    private User user;
+    private GoalCategory category;
 
-    public Account() {
-
-    }
-
-    public Account(User user) {
-        this.user = user;
-    }
+    @NotNull
+    @ManyToOne
+    private Account account;
 }
