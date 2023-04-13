@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(value = "*", maxAge = 3600L)
 @AllArgsConstructor
-public class AuthController {
+public class AuthRestController {
 
     private final AuthService authService;
 

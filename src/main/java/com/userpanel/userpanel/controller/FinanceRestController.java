@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(value = "*", maxAge = 3600L)
 @RequestMapping("/api/v1/finance")
 @AllArgsConstructor
-public class FinanceController {
+public class FinanceRestController {
 
     private final FinanceService financeService;
 
