@@ -17,7 +17,7 @@ public class FileUploader {
     private final String filesPath;
     private final String host;
 
-    public FileUploader(@Value("${user.panel.files.folder}") String filesPath, @Value("${cloud.disk.host}") String host) {
+    public FileUploader(@Value("${user.panel.files.folder}") String filesPath, @Value("${user.panel.host}") String host) {
         this.filesPath = filesPath;
         this.host = host;
     }
