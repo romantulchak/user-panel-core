@@ -16,7 +16,7 @@ public class GoalRestController {
     private final GoalService goalService;
 
     @PostMapping("/category/{name}")
-    public void createGoalCategory(@NotNull @Valid @RequestPart(value = "image") MultipartFile image,
+    public void createGoalCategory(@NotNull @Valid @RequestPart(value = "file") MultipartFile image,
                                    @NotNull @Valid @PathVariable("name") String name
     ) {
         goalService.createGoalCategory(image, name);
