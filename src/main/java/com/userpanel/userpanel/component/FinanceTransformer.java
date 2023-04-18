@@ -10,7 +10,6 @@ import java.util.List;
 @Component
 public class FinanceTransformer {
 
-
     public FinanceDTO convert(double totalIncome, double totalExpense, List<Finance> finances) {
         List<IncomeExpenseDTO> incomeExpense = finances.stream()
                 .map(finance -> new IncomeExpenseDTO(finance.getValue(), finance.getDate(), finance.getType()))

@@ -18,11 +18,14 @@ public class Account {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Finance> finances;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Goal> goals;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<GoalCategory> categories;
 
     @OneToOne
     private User user;
