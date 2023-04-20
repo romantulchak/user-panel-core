@@ -24,7 +24,7 @@ public class FileUploader {
 
     public String uploadFile(MultipartFile file) {
         try {
-            String filePath = String.join(SLASH, host, filesPath, file.getOriginalFilename());
+            String filePath = String.join(SLASH, host, "user-panel-files", file.getOriginalFilename());
             Path path = Paths.get(String.join(SLASH, filesPath, file.getOriginalFilename()));
             file.transferTo(path);
             return filePath;
