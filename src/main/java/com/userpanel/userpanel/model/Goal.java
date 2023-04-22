@@ -35,4 +35,16 @@ public class Goal {
     @NotNull
     @ManyToOne
     private Account account;
+
+    public Goal() {
+    }
+
+    public Goal(String name, double price, boolean isActive, String iconPath, GoalCategory category, Account account) {
+        this.name = name;
+        this.price = price;
+        this.isActive = isActive;
+        this.iconPath = iconPath;
+        this.category = category;
+        this.account = account;
+    }
 }

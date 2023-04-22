@@ -2,11 +2,15 @@ package com.userpanel.userpanel.service.impl;
 
 import com.userpanel.userpanel.component.GoalTransformer;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
+import com.userpanel.userpanel.exception.goal.GoalAlreadyExistsException;
 import com.userpanel.userpanel.exception.goal.GoalCategoryAlreadyExists;
 import com.userpanel.userpanel.model.Account;
+import com.userpanel.userpanel.model.Goal;
 import com.userpanel.userpanel.model.GoalCategory;
 import com.userpanel.userpanel.repository.AccountRepository;
 import com.userpanel.userpanel.repository.GoalCategoryRepository;
+import com.userpanel.userpanel.repository.GoalRepository;
+import com.userpanel.userpanel.request.CreateGoalRequest;
 import com.userpanel.userpanel.security.UserDetailsImpl;
 import com.userpanel.userpanel.service.GoalService;
 import com.userpanel.userpanel.util.FileUploader;
@@ -22,6 +26,7 @@ import java.util.List;
 public class GoalServiceImpl implements GoalService {
 
     private final GoalCategoryRepository goalCategoryRepository;
+    private final GoalRepository goalRepository;
     private final AccountRepository accountRepository;
     private final FileUploader fileUploader;
     private final GoalTransformer goalTransformer;
@@ -36,6 +41,25 @@ public class GoalServiceImpl implements GoalService {
         String filePath = fileUploader.uploadFile(image);
         GoalCategory goalCategory = new GoalCategory(name, filePath, account);
         goalCategoryRepository.save(goalCategory);
+    }
+
+    @Override
+    public void createGoal(CreateGoalRequest createGoalRequest, MultipartFile file, Authentication authentication) {
+        if (goalRepository.existsByName(createGoalRequest.getName())) {
+            throw new GoalAlreadyExistsException(createGoalRequest.getName());
+        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Account account = accountRepository.findByUserId(userDetails.getId());
+        GoalCategory category = goalCategoryRepository.findByAccountId(account.getId());
+        Goal goal = new Goal(
+                createGoalRequest.getName(),
+                createGoalRequest.getPrice(),
+                createGoalRequest.isActive(),
+                "",
+                category,
+                account
+        );
+        goalRepository.save(goal);
     }
 
     @Override

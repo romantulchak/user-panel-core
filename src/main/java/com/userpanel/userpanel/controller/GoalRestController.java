@@ -1,6 +1,7 @@
 package com.userpanel.userpanel.controller;
 
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
+import com.userpanel.userpanel.request.CreateGoalRequest;
 import com.userpanel.userpanel.service.GoalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -30,5 +31,12 @@ public class GoalRestController {
     @GetMapping("/categories")
     public List<GoalCategoryDTO> getAllCategories(Authentication authentication) {
         return goalService.getAllCategories(authentication);
+    }
+
+    @PostMapping("/create")
+    public void createCategory(@NotNull @Valid @RequestPart(value = "body") CreateGoalRequest createGoalRequest,
+                               @NotNull @Valid @RequestPart(value = "file") MultipartFile file,
+                               Authentication authentication) {
+        goalService.createGoal(createGoalRequest, file, authentication);
     }
 }

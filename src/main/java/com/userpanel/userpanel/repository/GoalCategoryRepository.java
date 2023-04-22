@@ -12,4 +12,6 @@ public interface GoalCategoryRepository extends JpaRepository<GoalCategory, UUID
     Boolean existsByName(String name);
 
     List<GoalCategoryProjection> findAllByAccountId(UUID accountId);
+
+    GoalCategory findByAccountId(UUID accountId);
 }
