@@ -1,5 +1,7 @@
 package com.userpanel.userpanel.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.userpanel.userpanel.component.GoalTransformer;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
 import com.userpanel.userpanel.exception.goal.GoalAlreadyExistsException;
@@ -44,13 +46,15 @@ public class GoalServiceImpl implements GoalService {
     }
 
     @Override
-    public void createGoal(CreateGoalRequest createGoalRequest, MultipartFile file, Authentication authentication) {
+    public void createGoal(String createGoalRequestString, MultipartFile file, Authentication authentication) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CreateGoalRequest createGoalRequest = objectMapper.readValue(createGoalRequestString, CreateGoalRequest.class);
         if (goalRepository.existsByName(createGoalRequest.getName())) {
             throw new GoalAlreadyExistsException(createGoalRequest.getName());
         }
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Account account = accountRepository.findByUserId(userDetails.getId());
-        GoalCategory category = goalCategoryRepository.findByAccountId(account.getId());
+        GoalCategory category = goalCategoryRepository.findByNameAndAccountId(createGoalRequest.getCategoryName(), account.getId());
         Goal goal = new Goal(
                 createGoalRequest.getName(),
                 createGoalRequest.getPrice(),

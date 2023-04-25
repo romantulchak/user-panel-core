@@ -1,7 +1,7 @@
 package com.userpanel.userpanel.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
-import com.userpanel.userpanel.request.CreateGoalRequest;
 import com.userpanel.userpanel.service.GoalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ public class GoalRestController {
     private final GoalService goalService;
 
     @PostMapping("/category/{name}")
-    public void createGoalCategory(@NotNull @Valid @RequestPart(value = "file") MultipartFile image,
+    public void createGoalCategory(@NotNull @Valid @RequestPart("file") MultipartFile image,
                                    @NotNull @Valid @PathVariable("name") String name,
                                    Authentication authentication
     ) {
@@ -34,9 +34,9 @@ public class GoalRestController {
     }
 
     @PostMapping("/create")
-    public void createCategory(@NotNull @Valid @RequestPart(value = "body") CreateGoalRequest createGoalRequest,
+    public void createCategory(@NotNull @Valid @RequestPart(value = "body") String createGoalRequestString,
                                @NotNull @Valid @RequestPart(value = "file") MultipartFile file,
-                               Authentication authentication) {
-        goalService.createGoal(createGoalRequest, file, authentication);
+                               Authentication authentication) throws JsonProcessingException {
+        goalService.createGoal(createGoalRequestString, file, authentication);
     }
 }
