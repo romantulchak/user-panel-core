@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -36,6 +37,8 @@ public class Goal {
     @ManyToOne
     private Account account;
 
+    private LocalDate addDate;
+
     public Goal() {
     }
 
@@ -46,5 +49,6 @@ public class Goal {
         this.iconPath = iconPath;
         this.category = category;
         this.account = account;
+        this.addDate = LocalDate.now();
     }
 }

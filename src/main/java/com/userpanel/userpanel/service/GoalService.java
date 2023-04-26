@@ -2,6 +2,7 @@ package com.userpanel.userpanel.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
+import com.userpanel.userpanel.dto.goal.GoalDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,4 +15,6 @@ public interface GoalService {
     void createGoal(String createGoalRequestString, MultipartFile file, Authentication authentication) throws JsonProcessingException;
 
     List<GoalCategoryDTO> getAllCategories(Authentication authentication);
+
+    List<GoalDTO> getGoals(Authentication authentication);
 }

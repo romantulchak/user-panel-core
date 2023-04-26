@@ -30,6 +30,9 @@ public class Account {
     @OneToOne
     private User user;
 
+    @Column(name = "amount")
+    private double balance;
+
     public Account() {
 
     }

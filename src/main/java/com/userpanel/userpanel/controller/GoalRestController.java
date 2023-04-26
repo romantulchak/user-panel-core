@@ -2,6 +2,7 @@ package com.userpanel.userpanel.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
+import com.userpanel.userpanel.dto.goal.GoalDTO;
 import com.userpanel.userpanel.service.GoalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -38,5 +39,10 @@ public class GoalRestController {
                                @NotNull @Valid @RequestPart(value = "file") MultipartFile file,
                                Authentication authentication) throws JsonProcessingException {
         goalService.createGoal(createGoalRequestString, file, authentication);
+    }
+
+    @GetMapping("/all")
+    public List<GoalDTO> getGoals(Authentication authentication) {
+        return goalService.getGoals(authentication);
     }
 }
