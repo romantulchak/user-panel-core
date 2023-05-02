@@ -5,15 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.userpanel.userpanel.component.GoalTransformer;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
 import com.userpanel.userpanel.dto.goal.GoalDTO;
+import com.userpanel.userpanel.exception.account.AccountNotFoundException;
 import com.userpanel.userpanel.exception.goal.GoalAlreadyExistsException;
 import com.userpanel.userpanel.exception.goal.GoalCategoryAlreadyExists;
+import com.userpanel.userpanel.exception.goal.GoalNotFoundException;
 import com.userpanel.userpanel.model.Account;
 import com.userpanel.userpanel.model.Goal;
 import com.userpanel.userpanel.model.GoalCategory;
 import com.userpanel.userpanel.repository.AccountRepository;
 import com.userpanel.userpanel.repository.GoalCategoryRepository;
 import com.userpanel.userpanel.repository.GoalRepository;
-import com.userpanel.userpanel.request.CreateGoalRequest;
+import com.userpanel.userpanel.request.goal.CreateGoalRequest;
 import com.userpanel.userpanel.security.UserDetailsImpl;
 import com.userpanel.userpanel.service.GoalService;
 import com.userpanel.userpanel.util.FileUploader;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -87,8 +90,23 @@ public class GoalServiceImpl implements GoalService {
         Pageable pageable = PageRequest.of(0, 100);
         return goalRepository.findAllByAccountId(account.getId(), pageable)
                 .stream()
-                .map(goalProjection -> goalTransformer.toGoalDto(goalProjection, account.getBalance()))
-                .sorted(((o1, o2) -> Boolean.compare(!o1.isActive(), !o2.isActive())))
+                    .map(goalProjection -> goalTransformer.toGoalDto(goalProjection, account.getBalance()))
+                    .sorted(((o1, o2) -> Boolean.compare(!o1.isActive(), !o2.isActive())))
                 .toList();
+    }
+
+    @Override
+    public boolean updateStatus(UUID id, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UUID accountId = accountRepository.findAccountIdByUserId(userDetails.getId())
+                .orElseThrow(AccountNotFoundException::new);
+        Goal goal = goalRepository.findByIdAndAccountId(id, accountId)
+                .map(it -> {
+                    it.setActive(!it.isActive());
+                    return it;
+                })
+                .orElseThrow(GoalNotFoundException::new);
+        goalRepository.save(goal);
+        return goal.isActive();
     }
 }

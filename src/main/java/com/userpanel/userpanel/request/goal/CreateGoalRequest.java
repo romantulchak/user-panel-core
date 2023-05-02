@@ -1,4 +1,4 @@
-package com.userpanel.userpanel.request;
+package com.userpanel.userpanel.request.goal;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

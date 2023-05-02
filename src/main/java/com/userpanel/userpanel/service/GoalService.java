@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GoalService {
 
@@ -17,4 +18,6 @@ public interface GoalService {
     List<GoalCategoryDTO> getAllCategories(Authentication authentication);
 
     List<GoalDTO> getGoals(Authentication authentication);
+
+    boolean updateStatus(UUID id, Authentication authentication);
 }

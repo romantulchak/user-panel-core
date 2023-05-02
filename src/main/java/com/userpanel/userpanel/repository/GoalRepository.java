@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface GoalRepository extends JpaRepository<Goal, UUID> {
@@ -13,4 +14,6 @@ public interface GoalRepository extends JpaRepository<Goal, UUID> {
     Boolean existsByName(String name);
 
     Slice<GoalProjection> findAllByAccountId(UUID accountId, Pageable pageable);
+
+    Optional<Goal> findByIdAndAccountId(UUID id, UUID accountId);
 }

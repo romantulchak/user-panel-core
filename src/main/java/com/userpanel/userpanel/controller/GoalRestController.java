@@ -3,6 +3,7 @@ package com.userpanel.userpanel.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.userpanel.userpanel.dto.goal.GoalCategoryDTO;
 import com.userpanel.userpanel.dto.goal.GoalDTO;
+import com.userpanel.userpanel.request.goal.UpdateGoalStatusRequest;
 import com.userpanel.userpanel.service.GoalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -44,5 +45,12 @@ public class GoalRestController {
     @GetMapping("/all")
     public List<GoalDTO> getGoals(Authentication authentication) {
         return goalService.getGoals(authentication);
+    }
+
+    @PutMapping("/update-status")
+    public boolean updateStatus(@RequestBody UpdateGoalStatusRequest updateGoalStatusRequest,
+                                Authentication authentication
+    ) {
+        return goalService.updateStatus(updateGoalStatusRequest.getId(), authentication);
     }
 }
