@@ -1,5 +1,6 @@
 package com.userpanel.userpanel.model;
 
+import com.userpanel.userpanel.model.purchase.Purchase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,9 @@ public class Account {
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<GoalCategory> categories;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<Purchase> purchases;
 
     @OneToOne
     private User user;
