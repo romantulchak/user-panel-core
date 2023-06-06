@@ -30,7 +30,7 @@ public class Item {
     @Min(0)
     private double price;
 
-    @Min(0)
+    @Min(1)
     private int amount;
 
     @NotNull
