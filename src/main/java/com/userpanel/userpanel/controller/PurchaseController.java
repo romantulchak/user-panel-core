@@ -1,12 +1,11 @@
 package com.userpanel.userpanel.controller;
 
 import com.userpanel.userpanel.dto.purchase.ShopTypeDTO;
+import com.userpanel.userpanel.request.purchase.PurchaseRequest;
 import com.userpanel.userpanel.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +20,11 @@ public class PurchaseController {
     @GetMapping("/shops")
     public List<ShopTypeDTO> getShops() {
        return purchaseService.getShopNames();
+    }
+
+    @PostMapping("/create")
+    public void create(@RequestBody PurchaseRequest purchaseRequest, Authentication authentication) {
+        purchaseService.create(purchaseRequest, authentication);
     }
 
 }

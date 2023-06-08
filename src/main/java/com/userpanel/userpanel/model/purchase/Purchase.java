@@ -4,8 +4,10 @@ import com.userpanel.userpanel.model.Account;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -15,6 +17,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder(setterPrefix = "with")
+@Accessors(chain = true)
 public class Purchase {
 
     @Id
@@ -38,4 +42,8 @@ public class Purchase {
 
     @ManyToOne
     private Account account;
+
+    public Purchase() {
+
+    }
 }
