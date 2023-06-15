@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,11 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .build();
         Purchase purchaseAfterSave = purchaseRepository.save(purchase);
         return purchaseAfterSave.setItems(createItems(request, purchaseAfterSave));
+    }
+
+    @Override
+    public void removeItemFromPurchase(UUID purchaseId, UUID itemId) {
+        itemRepository.deleteByIdAndPurchaseId(itemId, purchaseId);
     }
 
     private List<Item> createItems(PurchaseRequest request, Purchase purchaseAfterSave) {
