@@ -4,9 +4,7 @@ import com.userpanel.userpanel.model.Account;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,6 +16,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder(setterPrefix = "with")
+@AllArgsConstructor
+@NoArgsConstructor
 @Accessors(chain = true)
 public class Purchase {
 
@@ -43,7 +43,4 @@ public class Purchase {
     @ManyToOne
     private Account account;
 
-    public Purchase() {
-
-    }
 }

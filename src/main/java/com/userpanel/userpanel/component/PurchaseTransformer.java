@@ -11,9 +11,13 @@ public class PurchaseTransformer {
     public Item convertItemRequestToItem(ItemRequest itemRequest, Purchase purchase) {
         return Item.builder()
                 .withName(itemRequest.getName())
-                .withPrice(itemRequest.getPrice())
+                .withPrice(getPriceForItemAmount(itemRequest.getAmount(), itemRequest.getPrice()))
                 .withAmount(itemRequest.getAmount())
                 .withPurchase(purchase)
                 .build();
+    }
+
+    private double getPriceForItemAmount(int amount, double price) {
+        return amount * price;
     }
 }

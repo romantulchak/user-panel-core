@@ -1,6 +1,8 @@
 package com.userpanel.userpanel.model.purchase;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.userpanel.userpanel.dto.purchase.ShopTypeDTO;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,5 +27,10 @@ public enum ShopType {
 
     public String getName() {
         return name;
+    }
+
+    @JsonValue
+    public String toLowerCase() {
+        return StringUtils.capitalize(toString().toLowerCase());
     }
 }

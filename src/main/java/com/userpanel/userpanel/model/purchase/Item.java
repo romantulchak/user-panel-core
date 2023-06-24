@@ -7,9 +7,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
@@ -18,6 +16,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder(setterPrefix = "with")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item {
 
     @Id
@@ -38,8 +38,4 @@ public class Item {
     @NotNull
     @ManyToOne
     private Purchase purchase;
-
-    public Item() {
-
-    }
 }
