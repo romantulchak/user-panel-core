@@ -1,6 +1,7 @@
 package com.userpanel.userpanel.service.impl;
 
 import com.userpanel.userpanel.component.PurchaseTransformer;
+import com.userpanel.userpanel.dto.purchase.PurchaseDTO;
 import com.userpanel.userpanel.dto.purchase.ShopTypeDTO;
 import com.userpanel.userpanel.model.Account;
 import com.userpanel.userpanel.model.purchase.Item;
@@ -14,6 +15,8 @@ import com.userpanel.userpanel.security.UserDetailsImpl;
 import com.userpanel.userpanel.service.PurchaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,16 @@ public class PurchaseServiceImpl implements PurchaseService {
         return ShopType.getShops();
     }
 
+    @Override
+    public List<PurchaseDTO> getPurchases(Integer page, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Pageable pageable = PageRequest.of(page, 25);
+        return purchaseRepository.findAllByAccountUserId(userDetails.getId(), pageable)
+                .stream()
+                .map(purchaseTransformer::convertPurchaseProjectionToDto)
+                .toList();
+    }
+
     @Transactional
     @Override
     public Purchase create(PurchaseRequest request, Authentication authentication) {
@@ -43,7 +56,6 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .withName(request.getName())
                 .withShop(request.getShop())
                 .withDateTime(request.getDateTime())
-                .withItemCount(request.getItems().size())
                 .withAccount(account)
                 .build();
         Purchase purchaseAfterSave = purchaseRepository.save(purchase);

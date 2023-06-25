@@ -1,5 +1,6 @@
 package com.userpanel.userpanel.service;
 
+import com.userpanel.userpanel.dto.purchase.PurchaseDTO;
 import com.userpanel.userpanel.dto.purchase.ShopTypeDTO;
 import com.userpanel.userpanel.model.purchase.Purchase;
 import com.userpanel.userpanel.request.purchase.PurchaseRequest;
@@ -11,6 +12,8 @@ import java.util.UUID;
 public interface PurchaseService {
 
     List<ShopTypeDTO> getShopNames();
+
+    List<PurchaseDTO> getPurchases(Integer page, Authentication authentication);
 
     void removeItemFromPurchase(UUID purchaseId, UUID itemId);
 

@@ -36,7 +36,6 @@ public class Purchase {
     @NotNull
     private LocalDateTime dateTime;
 
-    private int itemCount;
     @OneToMany(mappedBy = "purchase")
     private List<Item> items;
 

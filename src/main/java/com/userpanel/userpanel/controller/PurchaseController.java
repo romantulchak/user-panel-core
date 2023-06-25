@@ -1,5 +1,6 @@
 package com.userpanel.userpanel.controller;
 
+import com.userpanel.userpanel.dto.purchase.PurchaseDTO;
 import com.userpanel.userpanel.dto.purchase.ShopTypeDTO;
 import com.userpanel.userpanel.request.purchase.PurchaseRequest;
 import com.userpanel.userpanel.service.PurchaseService;
@@ -30,7 +31,16 @@ public class PurchaseController {
         purchaseService.create(purchaseRequest, authentication);
     }
 
+    @GetMapping("/all")
+    @PreAuthorize(value = "isAuthenticated()")
+    public List<PurchaseDTO> getPurchases(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            Authentication authentication) {
+        return purchaseService.getPurchases(page, authentication);
+    }
+
     @DeleteMapping("/remove-item")
+    @PreAuthorize(value = "isAuthenticated()")
     public void removeItem(@RequestParam("purchaseId") UUID purchaseId,
                            @RequestParam("itemId") UUID itemId) {
         purchaseService.removeItemFromPurchase(purchaseId, itemId);
