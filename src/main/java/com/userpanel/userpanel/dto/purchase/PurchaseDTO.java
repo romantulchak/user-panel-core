@@ -15,4 +15,5 @@ public class PurchaseDTO {
     int itemCount;
     LocalDateTime purchaseDate;
     List<ItemDTO> items;
+    double price;
 }

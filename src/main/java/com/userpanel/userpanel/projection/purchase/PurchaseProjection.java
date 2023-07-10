@@ -11,4 +11,5 @@ public interface PurchaseProjection {
     ShopType getShop();
     LocalDateTime getDateTime();
     int getItemCount();
+    double getItemsPrice();
 }

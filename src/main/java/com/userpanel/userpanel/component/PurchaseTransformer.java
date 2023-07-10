@@ -29,7 +29,8 @@ public class PurchaseTransformer {
                 new ShopTypeDTO(purchaseProjection.getShop().getName()),
                 purchaseProjection.getItemCount(),
                 purchaseProjection.getDateTime(),
-                List.of()
+                List.of(),
+                purchaseProjection.getItemsPrice()
         );
     }
 
