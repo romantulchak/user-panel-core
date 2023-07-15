@@ -10,8 +10,11 @@ import com.userpanel.userpanel.model.purchase.ShopType;
 import com.userpanel.userpanel.repository.AccountRepository;
 import com.userpanel.userpanel.repository.ItemRepository;
 import com.userpanel.userpanel.repository.PurchaseRepository;
+import com.userpanel.userpanel.request.FinanceRequest;
+import com.userpanel.userpanel.request.purchase.ItemRequest;
 import com.userpanel.userpanel.request.purchase.PurchaseRequest;
 import com.userpanel.userpanel.security.UserDetailsImpl;
+import com.userpanel.userpanel.service.FinanceService;
 import com.userpanel.userpanel.service.PurchaseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final ItemRepository itemRepository;
     private final AccountRepository accountRepository;
     private final PurchaseTransformer purchaseTransformer;
+    private final FinanceService financeService;
 
     @Override
     public List<ShopTypeDTO> getShopNames() {
@@ -59,6 +63,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .withAccount(account)
                 .build();
         Purchase purchaseAfterSave = purchaseRepository.save(purchase);
+        financeService.createExpense(getExpenseRequest(account, request.getItems()));
         return purchaseAfterSave.setItems(createItems(request, purchaseAfterSave));
     }
 
@@ -72,5 +77,12 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .map(it -> purchaseTransformer.convertItemRequestToItem(it, purchaseAfterSave))
                 .toList();
         return itemRepository.saveAll(items);
+    }
+
+    private FinanceRequest getExpenseRequest(Account account, List<ItemRequest> items) {
+        double expense = items.stream()
+                .mapToDouble(ItemRequest::getPrice)
+                .sum();
+        return new FinanceRequest(account, expense);
     }
 }
